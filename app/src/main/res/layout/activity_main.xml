@@ -5,18 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <Button
+        android:id="@+id/scanButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="current_connected_wifi"
-        android:textSize="20sp"/>
-    <TextView
-        android:id="@+id/connected_wifi_info_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text=""/>
+        android:text="扫描"
+        android:layout_marginTop="5dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,5 +29,6 @@
             android:layout_height="wrap_content"
             android:text=""/>
     </ScrollView>
+
 
 </LinearLayout>
