@@ -3,6 +3,7 @@ package com.example.wifilocation;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -37,6 +38,8 @@ public class MainActivity extends Activity {
         }
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +50,12 @@ public class MainActivity extends Activity {
 
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         getLocationAccessPermission();  // 先获取位置权限
+
+        TextView tv1 = findViewById(R.id.tv1);
+        tv1.setTextColor(Color.BLUE);
+
+        TextView tv2 = findViewById(R.id.tv2);
+        tv2.setTextColor(Color.BLUE);
 
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
