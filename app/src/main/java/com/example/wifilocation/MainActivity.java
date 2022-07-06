@@ -18,12 +18,12 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private final String TAG = "Gunp";
+    private final String TAG = "Y30J";
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 1000;
     private final int UPDATE_UI_REQUEST_CODE = 1024;
-    private final String BASE1 = "lirex758002";
-    private final String BASE2 = "HUAWEI-SENSOR";
-    private final String BASE3 = "CMCC-FCfP";
+    private final String BASE1 = "1908";
+    private final String BASE2 = "HUAWEI-HOME-2108";
+    private final String BASE3 = "lyl";
 
     private TextView mScanResultTV;    // 显示WiFi扫描结果的控件
     private Button scanButton;
@@ -49,20 +49,12 @@ public class MainActivity extends Activity {
         getLocationAccessPermission();  // 先获取位置权限
         Log.d(TAG, "onCreate: ");
 
-<<<<<<< HEAD
-        TextView tv1 = findViewById(R.id.tv1);
-        tv1.setTextColor(Color.BLUE);
-
         TextView tv2 = findViewById(R.id.tv2);
         tv2.setTextColor(Color.BLUE);
 
-        mTimer = new Timer();
-        mTimer.schedule(new TimerTask() {
-=======
         mScanResultTV = findViewById(R.id.scan_results_info_tv);
         scanButton = findViewById(R.id.scanButton);
         scanButton.setOnClickListener(new View.OnClickListener() {
->>>>>>> 1cdcf92447b26237cf30c352f404e572efacc022
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: ");
