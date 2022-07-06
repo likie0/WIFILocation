@@ -1,0 +1,2 @@
+# WIFILocation
+Collect all fingerprints
