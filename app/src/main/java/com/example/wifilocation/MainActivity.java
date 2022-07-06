@@ -5,29 +5,30 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
-import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class MainActivity extends Activity {
+    private final String TAG = "Gunp";
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 1000;
     private final int UPDATE_UI_REQUEST_CODE = 1024;
-    private TextView mCurrConnTV;   // 显示当前所连WiFi信息的控件
+    private final String BASE1 = "lirex758002";
+    private final String BASE2 = "HUAWEI-SENSOR";
+    private final String BASE3 = "CMCC-FCfP";
+
     private TextView mScanResultTV;    // 显示WiFi扫描结果的控件
-    private StringBuffer mCurrConnStr;  // 暂存当前所连WiFi信息的字符串
+    private Button scanButton;
     private StringBuffer mScanResultStr;    // 暂存WiFi扫描结果的字符串
     private WifiManager mWifiManager;   // 调用WiFi各种API的对象
-    private Timer mTimer;   // 启动定时任务的对象
-    private final int SAMPLE_RATE = 2000; // 采样周期，以毫秒为单位
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -44,13 +45,11 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mCurrConnTV = findViewById(R.id.connected_wifi_info_tv);
-        mScanResultTV = findViewById(R.id.scan_results_info_tv);
-
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         getLocationAccessPermission();  // 先获取位置权限
+        Log.d(TAG, "onCreate: ");
 
+<<<<<<< HEAD
         TextView tv1 = findViewById(R.id.tv1);
         tv1.setTextColor(Color.BLUE);
 
@@ -59,19 +58,23 @@ public class MainActivity extends Activity {
 
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
+=======
+        mScanResultTV = findViewById(R.id.scan_results_info_tv);
+        scanButton = findViewById(R.id.scanButton);
+        scanButton.setOnClickListener(new View.OnClickListener() {
+>>>>>>> 1cdcf92447b26237cf30c352f404e572efacc022
             @Override
-            public void run() {
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: ");
                 scanWifi();
                 mHandler.sendEmptyMessage(UPDATE_UI_REQUEST_CODE);
             }
-        }, 0, SAMPLE_RATE); // 立即执行任务，每隔2000ms执行一次WiFi扫描的任务
-        // 扫描周期不能太快，WiFi扫描所有的AP需要一定时间
+        });
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mTimer.cancel();    // 取消定时任务
     }
 
     /**
@@ -91,26 +94,25 @@ public class MainActivity extends Activity {
 
         // 开始扫描WiFi
         mWifiManager.startScan();
-        // 获取并保存当前所连WiFi信息
-        mCurrConnStr = new StringBuffer();
-        WifiInfo wifiInfo = mWifiManager.getConnectionInfo();
-        mCurrConnStr.append("SSID: ").append(wifiInfo.getSSID()).append("\n");
-        mCurrConnStr.append("MAC Address: ").append(wifiInfo.getBSSID()).append("\n");
-        mCurrConnStr.append("Signal Strength(dBm): ").append(wifiInfo.getRssi()).append("\n");
-        mCurrConnStr.append("speed: ").append(wifiInfo.getLinkSpeed()).append(" ").append(WifiInfo.LINK_SPEED_UNITS);
-
         // 获取并保存WiFi扫描结果
+        Log.d(TAG, "scanWifi: ");
         mScanResultStr = new StringBuffer();
         List<ScanResult> scanResults = mWifiManager.getScanResults();
         for (ScanResult sr : scanResults) {
+            if (!sr.SSID.equals(BASE1) && !sr.SSID.equals(BASE2) && !sr.SSID.equals((BASE3))) continue;
+            Log.d(TAG, "scanWifi2: ");
             mScanResultStr.append("SSID: ").append(sr.SSID).append("\n");
             mScanResultStr.append("MAC Address: ").append(sr.BSSID).append("\n");
             mScanResultStr.append("Signal Strength(dBm): ").append(sr.level).append("\n\n");
+
+            Log.d(TAG, "SSID:" + sr.SSID + "  MAC Address: " + sr.BSSID + "  Signal Strength:" + sr.level);
+
+            // TODO 将结果存入数据库
         }
     }
 
     private void updateUI() {
-        mCurrConnTV.setText(mCurrConnStr);
+        Log.d(TAG, "updateUI: ");
         mScanResultTV.setText(mScanResultStr);
     }
 }

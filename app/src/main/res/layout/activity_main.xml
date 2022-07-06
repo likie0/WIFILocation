@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+<<<<<<< HEAD
     <TextView
         android:id="@+id/tv1"
         android:layout_width="match_parent"
@@ -18,6 +19,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text=""/>
+=======
+    <Button
+        android:id="@+id/scanButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="扫描"
+        android:layout_marginTop="5dp"/>
+>>>>>>> 1cdcf92447b26237cf30c352f404e572efacc022
     <TextView
         android:id="@+id/tv2"
         android:layout_width="match_parent"
@@ -37,5 +46,6 @@
             android:layout_height="wrap_content"
             android:text=""/>
     </ScrollView>
+
 
 </LinearLayout>
