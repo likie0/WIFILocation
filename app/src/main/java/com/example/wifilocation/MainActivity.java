@@ -29,8 +29,8 @@ public class MainActivity extends Activity {
 
     private TextView mScanResultTV;    // 显示WiFi扫描结果的控件
     private Button scanButton;
+    private FingerPrint fingerPrint;
     private StringBuffer mScanResultStr;    // 暂存WiFi扫描结果的字符串
-    private Integer[] result;
     private WifiManager mWifiManager;   // 调用WiFi各种API的对象
     private Handler mHandler = new Handler() {
         @Override
@@ -92,24 +92,24 @@ public class MainActivity extends Activity {
         // 获取并保存WiFi扫描结果
         Log.d(TAG, "scanWifi: ");
         mScanResultStr = new StringBuffer();
-        result = new Integer[]{-150, -150, -150, -150, -150};
+        fingerPrint = new FingerPrint(0, 0, -150, -150, -150, -150, -150);
         List<ScanResult> scanResults = mWifiManager.getScanResults();
         for (ScanResult sr : scanResults) {
             switch (sr.SSID) {
                 case BASE0:
-                    result[0] = sr.level;
+                    fingerPrint.setSs1(sr.level);
                     break;
                 case BASE1:
-                    result[1] = sr.level;
+                    fingerPrint.setSs2(sr.level);
                     break;
                 case BASE2:
-                    result[2] = sr.level;
+                    fingerPrint.setSs3(sr.level);
                     break;
                 case BASE3:
-                    result[3] = sr.level;
+                    fingerPrint.setSs4(sr.level);
                     break;
                 case BASE4:
-                    result[4] = sr.level;
+                    fingerPrint.setSs5(sr.level);
                     break;
             }
             mScanResultStr.append("SSID: ").append(sr.SSID).append("\n");
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 
             // TODO 将结果存入数据库
         }
-        Log.d(TAG, "RESULT: " + result[0] + "  " + result[1] + "  " + result[2] + "  " + result[3] + "  " + result [4]);
+        Log.d(TAG, "RESULT: " + fingerPrint.getSs1() + "  " + fingerPrint.getSs2() + "  " + fingerPrint.getSs3() + "  " + fingerPrint.getSs4() + "  " + fingerPrint.getSs5());
     }
 
     private void updateUI() {
