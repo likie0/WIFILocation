@@ -2,6 +2,7 @@ package com.example.wifilocation;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.wifi.ScanResult;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +29,6 @@ public class MainActivity extends Activity {
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 1000;
     private final int UPDATE_UI_REQUEST_CODE = 1024;
 
-    //根据自己家附近的AP调整MAC地址
     private final String BASE0 = "1c:b7:96:24:bc:68";//lirex758002
     private final String BASE1 = "1c:b7:96:24:bc:6c";//HUAWEI-SENSOR
     private final String BASE2 = "28:23:f5:47:db:68";//CMCC-FCfp
@@ -39,6 +40,8 @@ public class MainActivity extends Activity {
 
     private TextView mScanResultTV;    // 显示WiFi扫描结果的控件
     private Button scanButton;
+    private Switch switch_upload;
+
     private FingerPrint fingerPrint;
     private StringBuffer mScanResultStr;    // 暂存WiFi扫描结果的字符串
     private WifiManager mWifiManager;   // 调用WiFi各种API的对象
@@ -68,6 +71,7 @@ public class MainActivity extends Activity {
 
         mScanResultTV = findViewById(R.id.scan_results_info_tv);
         scanButton = findViewById(R.id.scanButton);
+        switch_upload = findViewById(R.id.switch_upload);
         et_x = findViewById(R.id.et_x);
         et_y = findViewById(R.id.et_y);
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +112,7 @@ public class MainActivity extends Activity {
         fingerPrint = new FingerPrint(0, 0, -100, -100, -100, -100, -100);
         List<ScanResult> scanResults = mWifiManager.getScanResults();
         for (ScanResult sr : scanResults) {
-            switch (sr.BSSID) {
+            switch (sr.SSID) {
                 case BASE0:
                     fingerPrint.setSs1(sr.level);
                     break;
@@ -131,6 +135,14 @@ public class MainActivity extends Activity {
             Log.d(TAG, "SSID:" + sr.SSID + "  MAC Address: " + sr.BSSID + "  Signal Strength:" + sr.level);
         }
 
+        if(switch_upload.isChecked()){
+            upload();
+        }
+
+        Log.d(TAG, "RESULT: " + fingerPrint.getSs1() + "  " + fingerPrint.getSs2() + "  " + fingerPrint.getSs3() + "  " + fingerPrint.getSs4() + "  " + fingerPrint.getSs5());
+    }
+
+    private void upload() {
         // 坐标保存
         int X = Integer.parseInt(et_x.getText().toString());
         int Y = Integer.parseInt(et_y.getText().toString());
@@ -148,9 +160,6 @@ public class MainActivity extends Activity {
             //连接失败
             Toast.makeText(this, "请检查网络连接", Toast.LENGTH_SHORT).show();
         }
-
-
-        Log.d(TAG, "RESULT: " + fingerPrint.getSs1() + "  " + fingerPrint.getSs2() + "  " + fingerPrint.getSs3() + "  " + fingerPrint.getSs4() + "  " + fingerPrint.getSs5());
     }
 
     private void updateUI() {
