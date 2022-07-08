@@ -3,6 +3,7 @@ package com.example.wifilocation;
 import android.Manifest;
 import android.app.Activity;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private final String TAG = "Gunp";
+    private final String TAG = "Y30J";
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 1000;
     private final int UPDATE_UI_REQUEST_CODE = 1024;
     private final String BASE0 = "lirex758002";
@@ -41,6 +42,8 @@ public class MainActivity extends Activity {
         }
     };
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,9 @@ public class MainActivity extends Activity {
         mWifiManager = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         getLocationAccessPermission();  // 先获取位置权限
         Log.d(TAG, "onCreate: ");
+
+        TextView tv2 = findViewById(R.id.tv2);
+        tv2.setTextColor(Color.BLUE);
 
         mScanResultTV = findViewById(R.id.scan_results_info_tv);
         scanButton = findViewById(R.id.scanButton);
