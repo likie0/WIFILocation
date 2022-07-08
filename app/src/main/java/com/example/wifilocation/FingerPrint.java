@@ -1,17 +1,17 @@
 package com.example.wifilocation;
 
 public class FingerPrint {
-    private Integer postionX;
-    private Integer postionY;
+    private Integer positionX;
+    private Integer positionY;
     private Integer ss1;
     private Integer ss2;
     private Integer ss3;
     private Integer ss4;
     private Integer ss5;
 
-    public FingerPrint(Integer postionX, Integer postionY, Integer ss1, Integer ss2, Integer ss3, Integer ss4, Integer ss5) {
-        this.postionX = postionX;
-        this.postionY = postionY;
+    public FingerPrint(Integer positionX, Integer positionY, Integer ss1, Integer ss2, Integer ss3, Integer ss4, Integer ss5) {
+        this.positionX = positionX;
+        this.positionY = positionY;
         this.ss1 = ss1;
         this.ss2 = ss2;
         this.ss3 = ss3;
@@ -35,21 +35,22 @@ public class FingerPrint {
         this.ss5 = ss5;
     }
 
-    public Integer getPostionX() {
-        return postionX;
+    public Integer getPositionX() {
+        return positionX;
     }
 
-    public void setPostionX(Integer postionX) {
-        this.postionX = postionX;
+    public void setPositionX(Integer positionX) {
+        this.positionX = positionX;
     }
 
-    public Integer getPostionY() {
-        return postionY;
+    public Integer getPositionY() {
+        return positionY;
     }
 
-    public void setPostionY(Integer postionY) {
-        this.postionY = postionY;
+    public void setPositionY(Integer positionY) {
+        this.positionY = positionY;
     }
+
 
     public Integer getSs1() {
         return ss1;

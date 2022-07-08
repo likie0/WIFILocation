@@ -13,19 +13,29 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.wifilocation.util.OKHttpUtil;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 public class MainActivity extends Activity {
-    private final String TAG = "Y30J";
+    private final String TAG = "Gunp";
     private static final int PERMISSIONS_REQUEST_CODE_ACCESS_FINE_LOCATION = 1000;
     private final int UPDATE_UI_REQUEST_CODE = 1024;
-    private final String BASE0 = "lirex758002";
-    private final String BASE1 = "HUAWEI-SENSOR";
-    private final String BASE2 = "CMCC-FCfP";
-    private final String BASE3 = "TP-LINK_A494";
-    private final String BASE4 = "203";
+
+    //根据自己家附近的AP调整MAC地址
+    private final String BASE0 = "1c:b7:96:24:bc:68";//lirex758002
+    private final String BASE1 = "1c:b7:96:24:bc:6c";//HUAWEI-SENSOR
+    private final String BASE2 = "28:23:f5:47:db:68";//CMCC-FCfp
+    private final String BASE3 = "78:44:fd:b1:a4:94";//TP-LINK_A494
+    private final String BASE4 = "a0:d9:3d:ef:cd:d0";//203
+
+    //这里是访问地址
+    private final String baseUrl = "https://h5556095v9.zicp.fun";
 
     private TextView mScanResultTV;    // 显示WiFi扫描结果的控件
     private Button scanButton;
@@ -41,7 +51,8 @@ public class MainActivity extends Activity {
             }
         }
     };
-
+    private EditText et_y;
+    private EditText et_x;
 
 
     @Override
@@ -57,6 +68,8 @@ public class MainActivity extends Activity {
 
         mScanResultTV = findViewById(R.id.scan_results_info_tv);
         scanButton = findViewById(R.id.scanButton);
+        et_x = findViewById(R.id.et_x);
+        et_y = findViewById(R.id.et_y);
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,10 +105,10 @@ public class MainActivity extends Activity {
         // 获取并保存WiFi扫描结果
         Log.d(TAG, "scanWifi: ");
         mScanResultStr = new StringBuffer();
-        fingerPrint = new FingerPrint(0, 0, -150, -150, -150, -150, -150);
+        fingerPrint = new FingerPrint(0, 0, -100, -100, -100, -100, -100);
         List<ScanResult> scanResults = mWifiManager.getScanResults();
         for (ScanResult sr : scanResults) {
-            switch (sr.SSID) {
+            switch (sr.BSSID) {
                 case BASE0:
                     fingerPrint.setSs1(sr.level);
                     break;
@@ -116,9 +129,27 @@ public class MainActivity extends Activity {
             mScanResultStr.append("MAC Address: ").append(sr.BSSID).append("\n");
             mScanResultStr.append("Signal Strength(dBm): ").append(sr.level).append("\n\n");
             Log.d(TAG, "SSID:" + sr.SSID + "  MAC Address: " + sr.BSSID + "  Signal Strength:" + sr.level);
-
-            // TODO 将结果存入数据库
         }
+
+        // 坐标保存
+        int X = Integer.parseInt(et_x.getText().toString());
+        int Y = Integer.parseInt(et_y.getText().toString());
+        fingerPrint.setPositionX(X);
+        fingerPrint.setPositionY(Y);
+
+        //将封装好的对象发送给服务器
+        Gson gson = new Gson();
+        String json = gson.toJson(fingerPrint);
+        String args[] = new String[]{"collection", "collection"};
+        try {
+            String res = OKHttpUtil.postSyncRequest(baseUrl, json, args);
+            Log.d("服务器返回值:", res);
+        } catch (Exception e) {
+            //连接失败
+            Toast.makeText(this, "请检查网络连接", Toast.LENGTH_SHORT).show();
+        }
+
+
         Log.d(TAG, "RESULT: " + fingerPrint.getSs1() + "  " + fingerPrint.getSs2() + "  " + fingerPrint.getSs3() + "  " + fingerPrint.getSs4() + "  " + fingerPrint.getSs5());
     }
 
